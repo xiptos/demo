@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/grpc")
 public class EndPointController {
 
-    @GrpcClient("grpc-model")
+    @GrpcClient(value="grpc-model")
     private SimpleGrpc.SimpleBlockingStub simpleBlockingStub;
 
     @GetMapping("/{name}")
@@ -20,6 +20,7 @@ public class EndPointController {
             final HelloReply response = this.simpleBlockingStub.sayHello(HelloRequest.newBuilder().setName(name).build());
             return response.getMessage();
         } catch (final StatusRuntimeException e) {
+            e.printStackTrace();
             return "FAILED with " + e.getStatus().getCode().name();
         }
     }
